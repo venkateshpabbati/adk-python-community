@@ -101,18 +101,26 @@ Depending on your change:
 For any changes that impact user-facing documentation (guides, API reference, tutorials), please open a PR in the [adk-docs](https://github.com/google/adk-docs) repository to update relevant part before or alongside your code PR.
 
 ## Development Setup
-1.  **Clone the repository:**
+This project follows the [GitHub flow](https://githubflow.github.io/) for contributions.
 
+Before you start, fork the repository to your personal GitHub account. All changes should be made in a new branch created from the `main` branch.
+
+1.  **Fork the repository** on GitHub.
+2.  **Clone your fork** locally:
     ```shell
-    gh repo clone google/adk-python
+    gh repo clone <your-username>/adk-python
     cd adk-python
     ```
+3.  **Create a new branch** for your work. Please use a descriptive name that includes the issue number if applicable (e.g., `feat/123-add-redis-integration` or `fix/456-docs-typo`).
+    ```shell
+    git checkout -b <branch-name>
+    ```
 
-2.  **Install uv:**
+4.  **Install uv:**
 
     Check out [uv installation guide](https://docs.astral.sh/uv/getting-started/installation/).
 
-3.  **Create and activate a virtual environment:**
+5.  **Create and activate a virtual environment:**
 
     **NOTE**: ADK supports Python 3.9+. Python 3.11 and above is strongly recommended.
 
@@ -133,7 +141,7 @@ For any changes that impact user-facing documentation (guides, API reference, tu
     source .\.venv\Scripts\activate
     ```
 
-4.  **Install dependencies:**
+6.  **Install dependencies:**
 
     ```shell
     uv sync --all-extras
@@ -141,7 +149,7 @@ For any changes that impact user-facing documentation (guides, API reference, tu
 
     **NOTE**: for convenience, installing all extra deps as a starting point.
 
-5.  **Run unit tests:**
+7.  **Run unit tests:**
 
     ```shell
     pytest ./tests/unittests
@@ -155,7 +163,7 @@ For any changes that impact user-facing documentation (guides, API reference, tu
     pytest ./tests/unittests
     ```
 
-6.  **Auto-format the code:**
+8.  **Auto-format the code:**
 
     **NOTE**: We use `isort` and `pyink` for styles. Use the included
     autoformat.sh to auto-format.
@@ -164,13 +172,13 @@ For any changes that impact user-facing documentation (guides, API reference, tu
     ./autoformat.sh
     ```
 
-7. **Build the wheel file:**
+9. **Build the wheel file:**
 
     ```shell
     uv build
     ```
 
-8.  **Test the locally built wheel file:**
+10.  **Test the locally built wheel file:**
     Have a simple testing folder setup as mentioned in the
     [quickstart](https://google.github.io/adk-docs/get-started/quickstart/).
 
@@ -197,6 +205,9 @@ For any changes that impact user-facing documentation (guides, API reference, tu
     ```shell
     pip install dist/google_adk-<version>-py3-none-any.whl
     ```
+
+## Commit Your Changes
+We follow the [Conventional Commits](https://www.conventionalcommits.org/en/v1.0.0/) specification for our commit messages. This helps us automate changelog generation and keeps the project history clean and understandable.
 
 ## Contributing Resources
 
