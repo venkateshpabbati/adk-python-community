@@ -17,11 +17,11 @@ The repository is organized into modules that mirror the structure of the core A
 
 plugins: Reusable plugins for common agent lifecycle events.
 
-services: Integrations with external services, like databases (Redis, Mem0), vector stores, or APIs.
+services: Integrations with external services, like databases, vector stores, or APIs.
 
 tools: Standalone tools that can be used by agents.
 
-deployment: Scripts and configurations to help you deploy your ADK agents to various platforms (e.g., AWS, Azure).
+deployment: Scripts and configurations to help you deploy your ADK agents to various platforms.
 
 # We Welcome Your Contributions!
 This is a community-driven project, and we would love for you to get involved. Whether it's adding a new service integration, fixing a bug, or improving documentation, your contributions are welcome.
