@@ -172,7 +172,11 @@ class TestRedisSessionService:
 
     @pytest.mark.asyncio
     async def test_create_and_list_sessions(self, redis_service):
-        """Test creating multiple sessions and listing them."""
+        """Test creating multiple sessions and listing them.
+
+        list_sessions() is expected to return lightweight session summaries,
+        i.e., with events and state stripped for performance.
+        """
         app_name = "test_app"
         user_id = "test_user"
 
@@ -181,15 +185,18 @@ class TestRedisSessionService:
         session_ids = ["session" + str(i) for i in range(3)]
         sessions_data = {}
 
-        for session_id in session_ids:
+        for i, session_id in enumerate(session_ids):
             session = await redis_service.create_session(
                 app_name=app_name,
                 user_id=user_id,
                 session_id=session_id,
                 state={"key": "value" + session_id},
             )
+            # Add at least one event to ensure list_sessions actually strips them.
+            session.events.append(Event(author="user", timestamp=float(i + 1)))
             sessions_data[session_id] = session.model_dump()
 
+        # Now mock Redis to return those sessions (with events present in storage)
         self._setup_redis_mocks(redis_service, sessions_data)
 
         list_sessions_response = await redis_service.list_sessions(
@@ -198,11 +205,13 @@ class TestRedisSessionService:
         sessions = list_sessions_response.sessions
 
         assert len(sessions) == len(session_ids)
-        returned_session_ids = {session.id for session in sessions}
+        returned_session_ids = {s.id for s in sessions}
         assert returned_session_ids == set(session_ids)
-        for session in sessions:
-            # Note: list_sessions removes state for performance
-            assert session.state == {}
+
+        for s in sessions:
+            # list_sessions returns summaries: events and state removed for perf.
+            assert len(s.events) == 0
+            assert s.state == {}
 
     @pytest.mark.asyncio
     async def test_session_state_management(self, redis_service):
