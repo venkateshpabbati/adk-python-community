@@ -14,6 +14,6 @@
 
 """Community session services for ADK."""
 
-from .redis_memory_session_service import RedisMemorySessionService
+from .redis_session_service import RedisSessionService
 
 __all__ = ["RedisMemorySessionService"]

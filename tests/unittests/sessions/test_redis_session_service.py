@@ -21,12 +21,12 @@ from unittest.mock import AsyncMock, MagicMock, patch
 from google.adk.events.event import Event
 from google.adk.events.event_actions import EventActions
 from google.adk.sessions.base_session_service import GetSessionConfig
-from google.adk_community.sessions import RedisMemorySessionService
+from google.adk_community.sessions.redis_session_service import RedisSessionService
 from google.genai import types
 
 
-class TestRedisMemorySessionService:
-    """Test cases for RedisMemorySessionService."""
+class TestRedisSessionService:
+    """Test cases for RedisSessionService."""
 
     @pytest_asyncio.fixture
     async def redis_service(self):
@@ -34,7 +34,7 @@ class TestRedisMemorySessionService:
         with patch("redis.asyncio.Redis") as mock_redis:
             mock_client = AsyncMock()
             mock_redis.return_value = mock_client
-            service = RedisMemorySessionService()
+            service = RedisSessionService()
             service.cache = mock_client
             yield service
 
@@ -45,7 +45,7 @@ class TestRedisMemorySessionService:
             mock_client = AsyncMock()
             mock_redis_cluster.return_value = mock_client
             cluster_uri = "redis://redis-node1:6379"
-            service = RedisMemorySessionService(cluster_uri=cluster_uri)
+            service = RedisSessionService(cluster_uri=cluster_uri)
             service.cache = mock_client
             yield service
 
@@ -56,7 +56,7 @@ class TestRedisMemorySessionService:
             mock_client = AsyncMock()
             mock_redis_cluster.return_value = mock_client
             cluster_uri = "redis://node1:6379,node2:6379"
-            service = RedisMemorySessionService(cluster_uri=cluster_uri)
+            service = RedisSessionService(cluster_uri=cluster_uri)
             service.cache = mock_client
             yield service
 
@@ -461,7 +461,7 @@ class TestRedisMemorySessionService:
             mock_client = AsyncMock()
             mock_redis_cluster.return_value = mock_client
 
-            service = RedisMemorySessionService(cluster_uri=cluster_uri)
+            service = RedisSessionService(cluster_uri=cluster_uri)
             assert service.cache is not None
             mock_redis_cluster.assert_called_once()
 
